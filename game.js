@@ -1,6 +1,3 @@
-// var Jumper = function() {};
-// Jumper.Play = function() {};
-
 class Play extends Phaser.Scene {
   constructor(){
     super('play');
@@ -12,14 +9,11 @@ class Play extends Phaser.Scene {
   }
 
   create(){
-   // this.stage.backgroundColor = '#6bf';
-  // this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.scale.maxWidth = this.game.width;
     this.scale.maxHeight = this.game.height;
     this.scale.pageAlignHorizontally = true;
     this.scale.pageAlignVertically = true;
-    //this.scale.setScreenSize( true );
-    //this.physics.startSystem( Phaser.Physics.ARCADE );
+    this.physics;
 
     this.cameraYMin = 99999;
     this.platformYMin = 99999;
@@ -31,7 +25,7 @@ class Play extends Phaser.Scene {
   }
 
   update() {
-    this.world.setBounds( 0, -this.player.yChange, this.world.width, this.game.height + this.player.yChange );
+    setBounds( 0, -this.player.yChange, this.world.width, this.game.height + this.player.yChange );
 
     this.cameraYMin = Math.min( this.cameraYMin, this.player.y - this.game.height + 130 );
     this.camera.y = this.cameraYMin;
@@ -39,7 +33,7 @@ class Play extends Phaser.Scene {
     this.physics.arcade.collide( this.player, this.platforms );
     this.playerMove();
 
-    this.platforms.forEachAlive( function( elem ) {
+    this.platforms.forEachAlive(function( elem ) {
       this.platformYMin = Math.min( this.platformYMin, elem.y );
       if( elem.y > this.camera.y + this.game.height ) {
         elem.kill();
@@ -96,8 +90,8 @@ class Play extends Phaser.Scene {
     } else if( this.cursor.right.isDown ) {
       this.player.body.velocity.x = 200;
     } else {
-      this.player.body.velocity.x = 0;
-    }
+       this.player.body.velocity.x = 0;
+     }
 
     if( this.cursor.up.isDown && this.player.body.touching.down ) {
       this.player.body.velocity.y = -500;
@@ -115,5 +109,6 @@ class Play extends Phaser.Scene {
 new Phaser.Game({
   width: 600,
   height: 900,
+  backgroundColor: '#6bf',
   scene: [Play]
 });
