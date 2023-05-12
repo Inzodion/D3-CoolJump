@@ -78,13 +78,13 @@ Jumper.Play.prototype = {
     // platform basic setup
     this.platforms = this.add.group();
     this.platforms.enableBody = true;
-    this.platforms.createMultiple( 10, 'pixel' );
+    this.platforms.createMultiple( 50, 'pixel' );
 
     // create the base platform, with buffer on either side so that the hero doesn't fall through
-    this.platformsCreateOne( -16, this.world.height - 16, this.world.width + 16 );
+    this.platformsCreateOne( -16, this.world.height - 26, this.world.width + 50 );
     // create a batch of platforms that start to move up the level
-    for( var i = 0; i < 9; i++ ) {
-      this.platformsCreateOne( this.rnd.integerInRange( 0, this.world.width - 50 ), this.world.height - 100 - 100 * i, 50 );
+    for( var i = 0; i < 20; i++ ) {
+      this.platformsCreateOne( this.rnd.integerInRange( 0, this.world.width - 50 ), this.world.height - 100 - 100 * i,100 );
     }
   },
 
@@ -93,15 +93,15 @@ Jumper.Play.prototype = {
     var platform = this.platforms.getFirstDead();
     platform.reset( x, y );
     platform.scale.x = width;
-    platform.scale.y = 16;
+    platform.scale.y = 25;
     platform.body.immovable = true;
     return platform;
   },
 
   playerCreate: function() {
     // basic hero setup
-    this.player = game.add.sprite( this.world.centerX, this.world.height - 36, 'player' );
-    this.player.anchor.set( 0.5 );
+    this.player = game.add.sprite( this.world.centerX, this.world.height - 45, 'player' );
+    this.player.anchor.set( 1 );
     
     // track where the hero started and how much the distance has changed from that point
     this.player.yOrig = this.player.y;
@@ -110,7 +110,7 @@ Jumper.Play.prototype = {
     // hero collision setup
     // disable all collisions except for down
     this.physics.arcade.enable( this.player );
-    this.player.body.gravity.y = 500;
+    this.player.body.gravity.y = 400;
     this.player.body.checkCollision.up = false;
     this.player.body.checkCollision.left = false;
     this.player.body.checkCollision.right = false;
@@ -128,7 +128,7 @@ Jumper.Play.prototype = {
 
     // handle hero jumping
     if( this.cursor.up.isDown && this.player.body.touching.down ) {
-      this.player.body.velocity.y = -600;
+      this.player.body.velocity.y = -500;
     } 
     
     // wrap world coordinated so that you can warp from left to right and right to left
