@@ -1,22 +1,25 @@
-var Jumper = function() {};
-Jumper.Play = function() {};
+// var Jumper = function() {};
+// Jumper.Play = function() {};
 
-Jumper.Play.prototype = {
+class Play extends Phaser.Scene {
+  constructor(){
+    super('play');
+  }
 
-  preload: function() {
+  preload() {
     this.load.image( 'player', 'Sprites/rightPlayer.png' );
     this.load.image( 'pixel', 'Sprites/pixel.png' );
-  },
+  }
 
-  create: function() {
-    this.stage.backgroundColor = '#6bf';
-    this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+  create(){
+   // this.stage.backgroundColor = '#6bf';
+  // this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.scale.maxWidth = this.game.width;
     this.scale.maxHeight = this.game.height;
     this.scale.pageAlignHorizontally = true;
     this.scale.pageAlignVertically = true;
-    this.scale.setScreenSize( true );
-    this.physics.startSystem( Phaser.Physics.ARCADE );
+    //this.scale.setScreenSize( true );
+    //this.physics.startSystem( Phaser.Physics.ARCADE );
 
     this.cameraYMin = 99999;
     this.platformYMin = 99999;
@@ -25,9 +28,9 @@ Jumper.Play.prototype = {
     this.playerCreate();
 
     this.cursor = this.input.keyboard.createCursorKeys();
-  },
+  }
 
-  update: function() {
+  update() {
     this.world.setBounds( 0, -this.player.yChange, this.world.width, this.game.height + this.player.yChange );
 
     this.cameraYMin = Math.min( this.cameraYMin, this.player.y - this.game.height + 130 );
@@ -43,18 +46,18 @@ Jumper.Play.prototype = {
         this.platformsCreateOne( this.rnd.integerInRange( 0, this.world.width - 50 ), this.platformYMin - 140, 50 );
       }
     }, this );
-  },
+  }
 
-  shutdown: function() {
+  shutdown() {
     this.world.setBounds( 0, 0, this.game.width, this.game.height );
     this.cursor = null;
     this.player.destroy();
     this.player = null;
     this.platforms.destroy();
     this.platforms = null;
-  },
+  }
 
-  platformsCreate: function() {
+  platformsCreate(){
     this.platforms = this.add.group();
     this.platforms.enableBody = true;
     this.platforms.createMultiple( 80, 'pixel' );
@@ -62,18 +65,18 @@ Jumper.Play.prototype = {
     for( var i = 0; i < 50; i++ ) {
       this.platformsCreateOne( this.rnd.integerInRange( 0, this.world.width - 50 ), this.world.height - 100 - 100 * i,100 );
     }
-  },
+  }
 
-  platformsCreateOne: function( x, y, width ) {
+  platformsCreateOne( x, y, width ) {
     var platform = this.platforms.getFirstDead();
     platform.reset( x, y );
     platform.scale.x = width;
     platform.scale.y = 25;
     platform.body.immovable = true;
     return platform;
-  },
+  }
 
-  playerCreate: function() {
+  playerCreate() {
     this.player = game.add.sprite( this.world.centerX, this.world.height - 45, 'player' );
     this.player.anchor.set( 1 );
     
@@ -85,9 +88,9 @@ Jumper.Play.prototype = {
     this.player.body.checkCollision.up = false;
     this.player.body.checkCollision.left = false;
     this.player.body.checkCollision.right = false;
-  },
+  }
 
-  playerMove: function() {
+  playerMove() {
     if( this.cursor.left.isDown ) {
       this.player.body.velocity.x = -200;
     } else if( this.cursor.right.isDown ) {
@@ -104,11 +107,13 @@ Jumper.Play.prototype = {
     this.player.yChange = Math.max( this.player.yChange, Math.abs( this.player.y - this.player.yOrig ) );
     
     if( this.player.y > this.cameraYMin + this.game.height && this.player.alive ) {
-      this.state.start( 'Play' );
+      this.state.start( 'play' );
     }
   }
 }
 
-var game = new Phaser.Game( 600, 900, Phaser.CANVAS, '' );
-game.state.add( 'Play', Jumper.Play ); 
-game.state.start( 'Play' );
+new Phaser.Game({
+  width: 600,
+  height: 900,
+  scene: [Play]
+});
