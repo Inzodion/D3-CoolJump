@@ -48,7 +48,7 @@ Jumper.Play.prototype = {
     this.cameraYMin = Math.min( this.cameraYMin, this.player.y - this.game.height + 130 );
     this.camera.y = this.cameraYMin;
 
-    // hero collisions and movement
+    // player collisions and movement
     this.physics.arcade.collide( this.player, this.platforms );
     this.playerMove();
 
@@ -80,7 +80,7 @@ Jumper.Play.prototype = {
     this.platforms.enableBody = true;
     this.platforms.createMultiple( 50, 'pixel' );
 
-    // create the base platform, with buffer on either side so that the hero doesn't fall through
+    // create the base platform, with buffer on either side so that the player doesn't fall through
     this.platformsCreateOne( -16, this.world.height - 26, this.world.width + 50 );
     // create a batch of platforms that start to move up the level
     for( var i = 0; i < 20; i++ ) {
@@ -99,15 +99,15 @@ Jumper.Play.prototype = {
   },
 
   playerCreate: function() {
-    // basic hero setup
+    // basic player setup
     this.player = game.add.sprite( this.world.centerX, this.world.height - 45, 'player' );
     this.player.anchor.set( 1 );
     
-    // track where the hero started and how much the distance has changed from that point
+    // track where the player started and how much the distance has changed from that point
     this.player.yOrig = this.player.y;
     this.player.yChange = 0;
 
-    // hero collision setup
+    // player collision setup
     // disable all collisions except for down
     this.physics.arcade.enable( this.player );
     this.player.body.gravity.y = 400;
@@ -117,7 +117,7 @@ Jumper.Play.prototype = {
   },
 
   playerMove: function() {
-    // handle the left and right movement of the hero
+    // handle the left and right movement of the player
     if( this.cursor.left.isDown ) {
       this.player.body.velocity.x = -200;
     } else if( this.cursor.right.isDown ) {
@@ -126,7 +126,7 @@ Jumper.Play.prototype = {
       this.player.body.velocity.x = 0;
     }
 
-    // handle hero jumping
+    // handle player jumping
     if( this.cursor.up.isDown && this.player.body.touching.down ) {
       this.player.body.velocity.y = -500;
     } 
@@ -134,10 +134,10 @@ Jumper.Play.prototype = {
     // wrap world coordinated so that you can warp from left to right and right to left
     this.world.wrap( this.player, this.player.width / 2, false );
 
-    // track the maximum amount that the hero has travelled
+    // track the maximum amount that the player has travelled
     this.player.yChange = Math.max( this.player.yChange, Math.abs( this.player.y - this.player.yOrig ) );
     
-    // if the hero falls below the camera view, gameover
+    // if the player falls below the camera view, gameover
     if( this.player.y > this.cameraYMin + this.game.height && this.player.alive ) {
       this.state.start( 'Play' );
     }
