@@ -104,7 +104,6 @@ class Game extends Phaser.Scene {
 		window.addEventListener("deviceorientation", this.handleOrientation, true);
 		this.physics.world.wrap(player, player.width / 6, false);
 
-		/* if the hero falls below the camera view, gameover */
 		if( player.y > this.cameraYMin + this.game.config.height ) {
 			this.GameOver();
 		}
@@ -154,13 +153,11 @@ class Game extends Phaser.Scene {
         player.yChange = 0;
     }
 	
-	/* Create Regular Tiles/Platform */
     createTiles(){
         tilesGroup = this.physics.add.staticGroup({runChildUpdate: true});
 		tilesGroup.enableBody = true;
 		tileChild = tilesGroup.getChildren();
 		
-		// spawnTile();
 		for( var i = 0; i< 10; i++){
 			tn = this.spawnTile( Phaser.Math.Between( 25, this.physics.world.bounds.width - 25 ), this.physics.world.bounds.height - 200 - 200 * i, 'tile-n');
 		}
@@ -232,16 +229,12 @@ class Game extends Phaser.Scene {
 		scoreText.setPosition(this.game.config.width/2, this.game.config.height/2 + 100);
 		scoreText.setFontSize(45);
 		scoreText.setOrigin(0.5);
-
-		/* Hide and clear assets */
 		tilesGroup.setAlpha(0);
 		tilesGroup.clear();
 		DisTilesGroup.setAlpha(0);
 		DisTilesGroup.clear();
 		springGroup.setAlpha(0);
 		springGroup.clear()
-
-		/* Player Opacity */
 		player.setAlpha(.45);
 	}
 
