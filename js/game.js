@@ -93,9 +93,9 @@ class Game extends Phaser.Scene {
 		var pointer = this.input.activePointer;
 		
 		if (pointer.isDown){
-			if (pointer.x > 300) {
+			if (pointer.x > player.x + 10) {
 				player.body.velocity.x = 400;
-			} else  if (pointer.x < 301){
+			} else  if (pointer.x < player.x - 10){
 				player.body.velocity.x = -400;
 			}
 			else player.body.velocity.x = 0;
